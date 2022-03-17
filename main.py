@@ -17,6 +17,7 @@ def list_workflows():
     subprocess.run(
         [f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows | jq '.workflows[] | .name,.id'"],
         shell=True,
+        check=True,
     )
 
 
@@ -29,21 +30,21 @@ def list_runs():
     if not WORKFLOW_ID:
         print("No workflow selected!")
     else:
-        command = f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows/{WORKFLOW_ID}/runs | jq '.workflow_runs[] | .id'"
-        subprocess.run([command], shell=True)
+        command = f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows/{WORKFLOW_ID}/runs | jq '.workflow_runs[] | .id'"  # pylint: disable=line-too-long
+        subprocess.run([command], shell=True, check=True)
 
 
 def delete_runs():
     if not WORKFLOW_ID:
         print("No workflow selected!")
     else:
-        command = f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows/{WORKFLOW_ID}/runs | jq '.workflow_runs[] | .id' | xargs -I{{}} gh api -X DELETE /repos/{OWNER}/{REPO}/actions/runs/{{}}"
-        subprocess.run([command], shell=True)
+        command = f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows/{WORKFLOW_ID}/runs | jq '.workflow_runs[] | .id' | xargs -I{{}} gh api -X DELETE /repos/{OWNER}/{REPO}/actions/runs/{{}}"  # pylint: disable=line-too-long
+        subprocess.run([command], shell=True, check=True)
 
 
 def exit_app():
     print("Invalid choice! Exiting...")
-    quit()
+    exit()
 
 
 def main():
