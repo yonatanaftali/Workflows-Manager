@@ -16,15 +16,10 @@ def get_clean_input(message):
 
 def list_workflows():
     try:
-        subprocess.run(
-            [
-                f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows | jq '.workflows[] | .name,.id'"
-            ],
-            shell=True,
-            check=True,
-        )
-    except Exception as e:
-        print(f"Got error: {e}")
+        command = f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows | jq '.workflows[] | .name,.id'"  # pylint: disable=line-too-long
+        subprocess.run([command], shell=True, check=True)
+    except Exception as exception:
+        print(f"Got error: {exception}")
 
 
 def select_workflow():
@@ -39,8 +34,8 @@ def list_runs():
         try:
             command = f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows/{WORKFLOW_ID}/runs | jq '.workflow_runs[] | .id'"  # pylint: disable=line-too-long
             subprocess.run([command], shell=True, check=True)
-        except Exception as e:
-            print(f"Got error: {e}")
+        except Exception as exception:
+            print(f"Got error: {exception}")
 
 
 def delete_runs():
@@ -50,8 +45,8 @@ def delete_runs():
         try:
             command = f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows/{WORKFLOW_ID}/runs | jq '.workflow_runs[] | .id' | xargs -I{{}} gh api -X DELETE /repos/{OWNER}/{REPO}/actions/runs/{{}}"  # pylint: disable=line-too-long
             subprocess.run([command], shell=True, check=True)
-        except Exception as e:
-            print(f"Got error: {e}")
+        except Exception as exception:
+            print(f"Got error: {exception}")
 
 
 def exit_app():
