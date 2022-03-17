@@ -1,16 +1,16 @@
 import subprocess
 import curses
 
-WORKFLOW_ID = None
+OWNER, REPO, WORKFLOW_ID = None, None, None
 
 
 # Using curses to stop input propagation
 def get_clean_input(message):
-    INPUT = input(message)
-    stdscr = curses.initscr()
+    user_input = input(message)
+    curses.initscr()
     curses.noecho()
     curses.endwin()
-    return INPUT
+    return user_input
 
 
 def list_workflows():
@@ -29,27 +29,19 @@ def list_runs():
     if not WORKFLOW_ID:
         print("No workflow selected!")
     else:
-        subprocess.run(
-            [
-                f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows/{WORKFLOW_ID}/runs | jq '.workflow_runs[] | .id'"
-            ],
-            shell=True,
-        )
+        command = f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows/{WORKFLOW_ID}/runs | jq '.workflow_runs[] | .id'"
+        subprocess.run([command], shell=True)
 
 
 def delete_runs():
     if not WORKFLOW_ID:
         print("No workflow selected!")
     else:
-        subprocess.run(
-            [
-                f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows/{WORKFLOW_ID}/runs | jq '.workflow_runs[] | .id' | xargs -I{{}} gh api -X DELETE /repos/{OWNER}/{REPO}/actions/runs/{{}}"
-            ],
-            shell=True,
-        )
+        command = f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows/{WORKFLOW_ID}/runs | jq '.workflow_runs[] | .id' | xargs -I{{}} gh api -X DELETE /repos/{OWNER}/{REPO}/actions/runs/{{}}"
+        subprocess.run([command], shell=True)
 
 
-def exit():
+def exit_app():
     print("Invalid choice! Exiting...")
     quit()
 
@@ -64,12 +56,12 @@ def main():
             "2": ("Select workflow", select_workflow),
             "3": ("List selected workflow runs", list_runs),
             "4": ("Delete selected workflow runs", delete_runs),
-            "5": ("Quit", quit),
+            "5": ("Exit", exit),
         }
         for key in sorted(menu.keys()):
             print(key + ": " + menu[key][0])
         ans = input("Enter your choice: ")
-        menu.get(ans, [None, exit])[1]()
+        menu.get(ans, [None, exit_app])[1]()
 
 
 if __name__ == "__main__":
