@@ -1,5 +1,6 @@
-import subprocess
 import curses
+import subprocess
+import sys
 
 OWNER, REPO, WORKFLOW_ID = None, None, None
 
@@ -14,11 +15,16 @@ def get_clean_input(message):
 
 
 def list_workflows():
-    subprocess.run(
-        [f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows | jq '.workflows[] | .name,.id'"],
-        shell=True,
-        check=True,
-    )
+    try:
+        subprocess.run(
+            [
+                f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows | jq '.workflows[] | .name,.id'"
+            ],
+            shell=True,
+            check=True,
+        )
+    except Exception as e:
+        print(f"Got error: {e}")
 
 
 def select_workflow():
@@ -30,21 +36,27 @@ def list_runs():
     if not WORKFLOW_ID:
         print("No workflow selected!")
     else:
-        command = f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows/{WORKFLOW_ID}/runs | jq '.workflow_runs[] | .id'"  # pylint: disable=line-too-long
-        subprocess.run([command], shell=True, check=True)
+        try:
+            command = f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows/{WORKFLOW_ID}/runs | jq '.workflow_runs[] | .id'"  # pylint: disable=line-too-long
+            subprocess.run([command], shell=True, check=True)
+        except Exception as e:
+            print(f"Got error: {e}")
 
 
 def delete_runs():
     if not WORKFLOW_ID:
         print("No workflow selected!")
     else:
-        command = f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows/{WORKFLOW_ID}/runs | jq '.workflow_runs[] | .id' | xargs -I{{}} gh api -X DELETE /repos/{OWNER}/{REPO}/actions/runs/{{}}"  # pylint: disable=line-too-long
-        subprocess.run([command], shell=True, check=True)
+        try:
+            command = f"gh api -X GET /repos/{OWNER}/{REPO}/actions/workflows/{WORKFLOW_ID}/runs | jq '.workflow_runs[] | .id' | xargs -I{{}} gh api -X DELETE /repos/{OWNER}/{REPO}/actions/runs/{{}}"  # pylint: disable=line-too-long
+            subprocess.run([command], shell=True, check=True)
+        except Exception as e:
+            print(f"Got error: {e}")
 
 
 def exit_app():
     print("Invalid choice! Exiting...")
-    exit()
+    sys.exit()
 
 
 def main():
