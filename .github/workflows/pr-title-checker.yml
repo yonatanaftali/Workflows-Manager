@@ -1,7 +1,17 @@
 name: "PR Title Checker"
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
+  pull_request_target:
+    types:
+      [
+        opened,
+        synchronize,
+        reopened,
+        ready_for_review,
+        converted_to_draft,
+        edited,
+        labeled,
+        unlabeled,
+      ]
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
