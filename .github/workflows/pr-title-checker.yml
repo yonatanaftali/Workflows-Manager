@@ -3,13 +3,14 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: thehanimo/pr-title-checker@v1.3.4
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   echo:
     runs-on: ubuntu-latest
