@@ -1,0 +1,15 @@
+{
+  "LABEL": {
+    "name": "title needs formatting",
+    "color": "FF0000"
+  },
+  "CHECKS": {
+    "prefixes": [],
+    "regexp": "(VUP|MEET|UIAM|VBCBE)-[0-9]+ - .+"
+  },
+  "MESSAGES": {
+    "success": "Great title! Proceeding...",
+    "failure": "Title must be in the format: <jira-board-prefix>-<number> - <title>. Exiting...",
+    "notice": ""
+  }
+}
