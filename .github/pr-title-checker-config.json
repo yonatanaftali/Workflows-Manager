@@ -8,8 +8,8 @@
     "regexp": "(VUP|MEET|UIAM|VBCBE)-[0-9]+ - .+"
   },
   "MESSAGES": {
-    "success": "Great title! Proceeding...",
-    "failure": "Title needs formatting. Exiting...",
-    "notice": "Title must be in the format: <jira-board-prefix>-<number> - <title>"
+    "success": "",
+    "failure": "Title must be in the format: <jira-board-prefix>-<number> - <title>.",
+    "notice": ""
   }
 }
