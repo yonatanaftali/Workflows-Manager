@@ -4,6 +4,7 @@ import sys
 
 OWNER, REPO, WORKFLOW_ID = None, None, None
 
+afafafgaf
 
 # Using curses to stop input propagation
 def get_clean_input(message):
