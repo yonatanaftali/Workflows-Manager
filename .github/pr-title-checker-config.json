@@ -9,7 +9,7 @@
   },
   "MESSAGES": {
     "success": "Great title! Proceeding...",
-    "failure": "Title must be in the format: <jira-board-prefix>-<number> - <title>. Exiting...",
-    "notice": ""
+    "failure": "Title needs formatting. Exiting...",
+    "notice": "Title must be in the format: <jira-board-prefix>-<number> - <title>"
   }
 }
